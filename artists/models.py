@@ -10,3 +10,6 @@ class Artist(models.Model):
 
     class Meta:
         ordering = ['stage_name']
+
+    def __str__(self):
+        return self.stage_name 
