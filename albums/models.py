@@ -8,7 +8,7 @@ class Album(models.Model):
     name = models.CharField(max_length = 200, default="New Album")
     creation_date = models.DateTimeField('Creation Date')
     release_date = models.DateTimeField(blank=False)
-    cost = models.DecimalField(max_digits=5, decimal_places=2)
+    cost = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return self.name

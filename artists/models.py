@@ -6,7 +6,7 @@ from django.forms import CharField, URLField
 
 class Artist(models.Model):
     stage_name = models.CharField(max_length=200, unique=True)
-    social_link = models.URLField(max_length=200, default="https://www.instagram.com/")
+    social_link = models.URLField(max_length=200, blank=True, null=False)
 
     class Meta:
         ordering = ['stage_name']
