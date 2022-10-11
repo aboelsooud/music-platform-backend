@@ -15,7 +15,6 @@
 * [for each artist, list down all of his/her albums](#for-each-artist-list-down-all-of-his-or-her-albums) 
 * [list down all albums ordered by cost then by name](#list-down-all-albums-ordered-by-cost-then-by-name)
 
-
 ### import models
 
 ```python
@@ -76,6 +75,7 @@ Artist.objects.filter(stage_name__startswith='a')
 
 <QuerySet [<Artist: A$AP Rocky>]>
 ```
+
 ### create some albums and assign them to any artists
 
 ```python
@@ -139,7 +139,6 @@ Album.objects.all().count()
 ```
 
 ### for each artist list down all of his or her albums
-
 
 #### First way
 ```python
@@ -218,4 +217,3 @@ Decimal('199.99')
 'New Album'
 Decimal('999.99')
 ```
-
