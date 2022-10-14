@@ -7,7 +7,7 @@ class AlbumForm(forms.ModelForm):
 
     class Meta:
         model = Album
-        help_texts = {'is_explicit' : 'Approve the album if its name is not explicit'}
+        help_texts = {'is_approved_by_admin' : 'Approve the album if its name is not explicit'}
         exclude = () 
 
 
@@ -16,7 +16,7 @@ class AlbumAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Album data', {'fields' : ['name', 'artist',]}),
         ('Date information', {'fields': ['creation_date', 'release_date']}),
-        (None,  {'fields': ['is_explicit']}),
+        (None,  {'fields': ['is_approved_by_admin']}),
         (None,  {'fields': ['cost']}),
     ]
 
