@@ -11,6 +11,8 @@ class AlbumForm(forms.ModelForm):
         exclude = () 
 
 
+
+
 class AlbumAdmin(admin.ModelAdmin):
     form = AlbumForm
     fieldsets = [
