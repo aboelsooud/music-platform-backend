@@ -3,7 +3,10 @@ from artists.models import Artist
 
 # Create your models here.
 
-class Album(models.Model):
+from model_utils.models import TimeStampedModel
+
+
+class Album(TimeStampedModel):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     name = models.CharField(max_length = 200, default="New Album")
     creation_date = models.DateTimeField('Creation Date')
