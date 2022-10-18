@@ -20,6 +20,4 @@ class AlbumAdmin(admin.ModelAdmin):
         (None,  {'fields': ['cost']}),
     ]
 
-    readonly_fields = ['creation_date']
-
 admin.site.register(Album, AlbumAdmin)
