@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
+from artists.models import Artist
 from .forms import ArtistForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -12,11 +15,13 @@ def create_artist(request):
 
     if request.method == "POST":
         form = ArtistForm(request.POST)
+        stage_name = request.POST.get('stage_name')
         if form.is_valid:
-            form.save()
-            return redirect('artists')
-
-
+            try:
+                artist = Artist.objects.get(stage_name = stage_name)
+            except:
+                form.save()
+                return redirect('artists')
     context = {'form': form}
 
     return render(request, 'artists/artist_form.html', context)
