@@ -1,5 +1,12 @@
 {% extends 'main.html' %}
 
+{%block extrahead%}
+    
+    {% load static %}
+
+    <link rel="stylesheet" href = "{% static 'artists/style.css' %}">
+
+{%endblock extrahead%}
 
 {% block content %}
     
