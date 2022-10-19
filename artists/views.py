@@ -9,12 +9,10 @@ from django.contrib import messages
 
 def index(request):
     artists = Artist.objects.all()
-
     return render(request, 'artists/artists.html', {'artists' : artists})
 
 def create_artist(request):
     form = ArtistForm()
-
     if request.method == "POST":
         form = ArtistForm(request.POST)
         stage_name = request.POST.get('stage_name')
