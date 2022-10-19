@@ -8,7 +8,9 @@ from django.contrib import messages
 # Create your views here.
 
 def index(request):
-    return HttpResponse("artist")
+    artists = Artist.objects.all()
+
+    return render(request, 'artists/artists.html', {'artists' : artists})
 
 def create_artist(request):
     form = ArtistForm()
