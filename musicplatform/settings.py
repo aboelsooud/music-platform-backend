@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'artists.apps.ArtistsConfig',
     'albums.apps.AlbumsConfig',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
