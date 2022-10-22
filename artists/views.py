@@ -5,6 +5,7 @@ from django.views import View
 from artists.models import Artist
 from .forms import ArtistForm
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -16,11 +17,11 @@ class IndexView(TemplateView):
         context['artists'] = Artist.objects.all()
         return context
 
-class CreateArtistView(View):
+class CreateArtistView(LoginRequiredMixin, View):
     form_class = ArtistForm
     initial = {'key': 'value'}
     template_name = 'artists/artist_form.html'
-
+    
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
