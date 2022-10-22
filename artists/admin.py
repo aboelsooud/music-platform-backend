@@ -4,10 +4,6 @@ from albums.models import Album
 
 # Register your models here.
 
-class AlbumsInlineAdmin(admin.TabularInline):
-    model = Album
-    extra = 0
-
 class ArtistAdmin(admin.ModelAdmin):
     list_display = ('stage_name', 'number_of_approved_albums', )
     
@@ -17,7 +13,5 @@ class ArtistAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Artist data', {'fields': ['stage_name', 'social_link']}),
     ]
-
-    inlines = [AlbumsInlineAdmin]
 
 admin.site.register(Artist, ArtistAdmin)
