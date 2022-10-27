@@ -7,4 +7,5 @@ from . import views
 urlpatterns = [
     path('login/', views.LoginApiView.as_view(), name= "Login"),
     path('logout/', knox_views.LogoutView.as_view(), name="Logout"),
+    path('register/', views.RegisterApiView.as_view(), name="register"),
 ]
