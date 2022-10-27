@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_extensions',
     'knox',
+    'users.apps.UsersConfig',
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
