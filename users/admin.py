@@ -14,5 +14,4 @@ class UserAdminForm(forms.ModelForm):
 class UserAdmin(admin.ModelAdmin):
     form = UserAdminForm
 
-
 admin.site.register(User, UserAdmin)

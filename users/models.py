@@ -5,3 +5,4 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     bio = models.CharField(max_length = 256, blank = True)
+ 

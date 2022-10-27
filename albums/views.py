@@ -11,7 +11,6 @@ class IndexView(View):
     def get(self, request):
         return HttpResponse('album')
 
-
 class CreateAlbumView(View):
     form_class = AlbumForm
     initial = {'key': 'value'}

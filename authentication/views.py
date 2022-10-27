@@ -5,7 +5,6 @@ from knox.auth import AuthToken
 from users.models import User
 from .serializers import UserRegiserSerializer, UserModelSerializer
 
-
 class LoginApiView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = AuthTokenSerializer
