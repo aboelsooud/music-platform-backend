@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from .forms import AlbumForm
 from dateutil.parser import parse
 from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -13,7 +12,7 @@ class IndexView(View):
         return HttpResponse('album')
 
 
-class CreateAlbumView(LoginRequiredMixin ,View):
+class CreateAlbumView(View):
     form_class = AlbumForm
     initial = {'key': 'value'}
     template_name = 'albums/album_form.html'
