@@ -15,11 +15,9 @@ class AlbumAdmin(admin.ModelAdmin):
 
     fieldsets = [
         ('Album data', {'fields' : ['name', 'artist',]}),
-        ('Date information', {'fields': ['creation_date', 'release_date']}),
+        ('Date information', {'fields': ['release_date']}),
         (None,  {'fields': ['is_approved_by_admin']}),
         (None,  {'fields': ['cost']}),
     ]
-
-    readonly_fields = ['creation_date']
 
 admin.site.register(Album, AlbumAdmin)

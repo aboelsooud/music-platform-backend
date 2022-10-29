@@ -6,7 +6,6 @@ from albums.models import Album
 
 class AlbumsInlineAdmin(admin.TabularInline):
     model = Album
-    readonly_fields = ['creation_date']
     extra = 0
 
 class ArtistAdmin(admin.ModelAdmin):

@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+
+{%block extrahead%}    
+    {% load static %}
+    <link rel="stylesheet" href = "{% static 'artists/style.css' %}">
+{%endblock extrahead%}
+
+{%block content%}
+    <div>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Create"/>
+        </form>
+    </div>
+{%endblock content%}

@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+
+{%block content%}    
+    {% if artists %}
+        <ul> 
+            {% for artist in artists %}
+                <li> {{artist.stage_name}}:  </li>
+                <ul>
+                    <li>ID: {{artist.id}}</li>
+                    {% if artist.social_link %}
+                        <li>Social link: <a href = "{{ artist.social_link }}">instagram</a></li>
+                    {% endif %}                    
+                    {% if artist.album_set.all %}
+                        <li>Albums: </li>
+                        {% for album in artist.album_set.all %}
+                            <ul>
+                                <li>Name: {{album.name}}</li>
+                                <ul>
+                                    <li>ID: {{album.id}}</li>
+                                    <li>Release date: {{album.release_date}}</li>
+                                    <li>Cost: {{album.cost}}$</li>
+                                </ul>
+                            </ul>
+                            <br/>
+                        {% endfor %}
+                        {% else %}
+                            <br/>
+                    {% endif %}     
+                </ul>
+                <hr/>
+                <br/>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No artists are available.</p>
+    {% endif %}
+{%endblock%}
