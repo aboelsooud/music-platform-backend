@@ -10,8 +10,5 @@ class ArtistAdmin(admin.ModelAdmin):
     def number_of_approved_albums(self, artist):
         return artist.album_set.filter(is_approved_by_admin = True).count()
     
-    fieldsets = [
-        ('Artist data', {'fields': ['stage_name', 'social_link']}),
-    ]
 
 admin.site.register(Artist, ArtistAdmin)
