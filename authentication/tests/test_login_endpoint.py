@@ -1,7 +1,7 @@
 import pytest
-
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
+
 
 @pytest.mark.django_db
 def test_login_success():
@@ -16,11 +16,9 @@ def test_login_success():
     client.post('/authentication/register/', user)
 
     response = client.post('/authentication/login/', {'username' : "mahmoud_aboelsoud", 'password' : "Password#1",})
-    
-    assert response.status_code == status.HTTP_200_OK
-    
     data = response.data
 
+    assert response.status_code == status.HTTP_200_OK
     assert data['user']['username'] == user['username']
     assert "email" in data['user']
     assert 'password' not in data
@@ -28,7 +26,6 @@ def test_login_success():
     assert 'token' in data
     assert 'bio' in data['user']
     assert 'id' in data['user']
-
 
 @pytest.mark.django_db
 def test_login_fail_not_a_user():

@@ -1,8 +1,8 @@
 import pytest
-
-from rest_framework.test import APIClient
 from artists.models import Artist
 from rest_framework import status
+from rest_framework.test import APIClient
+
 
 @pytest.mark.django_db
 def test_create_an_artist():
@@ -14,6 +14,7 @@ def test_create_an_artist():
 
     response = client.post('/artists/', artist)
     data = response.data
+
     assert response.status_code == status.HTTP_201_CREATED
     assert data['id'] == 1
     assert data['stage_name'] == artist['stage_name']

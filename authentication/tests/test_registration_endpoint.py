@@ -1,7 +1,6 @@
 import pytest
-
-from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.test import APIClient
 
 
 @pytest.mark.django_db
@@ -26,7 +25,6 @@ def test_register_with_correct_data():
     assert 'bio' in data['user']
     assert 'id' in data['user']
 
-
 @pytest.mark.django_db
 def test_register_with_some_missing_fields1():
     user = {
@@ -40,7 +38,6 @@ def test_register_with_some_missing_fields1():
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-
 @pytest.mark.django_db
 def test_register_with_some_missing_fields2():
     user = {
@@ -53,7 +50,6 @@ def test_register_with_some_missing_fields2():
     response = client.post('/authentication/register/', user)
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-
 
 @pytest.mark.django_db
 def test_register_with_existing_mail():
@@ -79,7 +75,6 @@ def test_register_with_existing_mail():
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-
 @pytest.mark.django_db
 def test_register_with_existing_username():
     user1 = {
@@ -104,7 +99,6 @@ def test_register_with_existing_username():
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-
 @pytest.mark.django_db
 def test_register_with_weak_password():
     user = {
@@ -118,7 +112,6 @@ def test_register_with_weak_password():
     response = client.post('/authentication/register/', user)
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-
 
 @pytest.mark.django_db
 def test_register_with_not_matching_passwords():
