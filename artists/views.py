@@ -1,10 +1,7 @@
 from artists.models import Artist
 from .serializers import ArtistSerializer
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from django.http import JsonResponse
-from django.contrib.auth.models import AnonymousUser
 from rest_framework.views import APIView
 
 
@@ -17,8 +14,9 @@ class ArtistApiView(APIView):
     def post(self, request):
         if hasattr(request.user, 'artist'):
             return Response(data={'status': status.HTTP_400_BAD_REQUEST,'message':'this user is already an artist'}, status=status.HTTP_400_BAD_REQUEST, )
-        if type(request.user) == AnonymousUser:
-            return JsonResponse(status=status.HTTP_401_UNAUTHORIZED, data = {'status': status.HTTP_401_UNAUTHORIZED,'message':'this user is not authenticated'})
+        
+        if not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED, data = {'status': status.HTTP_401_UNAUTHORIZED,'message':'this user is not authenticated'})
         
         seri = ArtistSerializer(data = request.data)
         seri.is_valid(raise_exception=True)
