@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'knox',
     'users.apps.UsersConfig',
+    'django_filters',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -135,5 +136,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES' : ('knox.auth.TokenAuthentication',)
+    'DEFAULT_AUTHENTICATION_CLASSES' : ('knox.auth.TokenAuthentication',),
+
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
