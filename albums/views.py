@@ -4,10 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework import pagination
-from dateutil.parser import parse
 
 # Create your views here.
-
 
 class AlbumApi(GenericAPIView):
     queryset = Album.objects.all()
@@ -30,8 +28,13 @@ class AlbumApi(GenericAPIView):
 
         seri = AlbumSerializer(data = request.data)
         seri.is_valid(raise_exception=True)
-
-        album = Album.objects.create(name = seri.validated_data['name'], release_date = seri.validated_data['release_date'], cost = seri.validated_data['cost'], artist = request.user.artist)
+       
+        album = None
+        
+        if 'name' in seri.validated_data:
+            album = Album.objects.create(name = seri.validated_data['name'], release_date = seri.validated_data['release_date'], cost = seri.validated_data['cost'], artist = request.user.artist)
+        else:
+            album = Album.objects.create(release_date = seri.validated_data['release_date'], cost = seri.validated_data['cost'], artist = request.user.artist)
         
         response = AlbumSerializer(album)
 
