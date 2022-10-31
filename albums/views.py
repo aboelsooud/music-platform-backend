@@ -1,35 +1,21 @@
-from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from .forms import AlbumForm
-from dateutil.parser import parse
-from django.views import View
+from albums.models import Album
+from .serializers import AlbumSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.generics import GenericAPIView
+from rest_framework import pagination
 
 # Create your views here.
 
-class IndexView(View):
 
-    def get(self, request):
-        return HttpResponse('album')
-
-class CreateAlbumView(View):
-    form_class = AlbumForm
-    initial = {'key': 'value'}
-    template_name = 'albums/album_form.html'
+class AlbumApi(GenericAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    pagination_class = pagination.LimitOffsetPagination
     
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        realease_date = request.POST.get('release_date')
-        if form.is_valid:
-            try:
-                parse(realease_date)
-                form.save()
-                return redirect('albums')
-            except:
-                pass
-        context = {'form' : form}
-
-        return render(request, 'albums/album_form.html', context)
+    def get(self, request):
+        data = Album.objects.filter(is_approved_by_admin=True)
+        serializer = AlbumSerializer(data, many=True)
+        if 'limit' not in request.query_params:
+            return Response(serializer.data)
+        return self.get_paginated_response(self.paginate_queryset(serializer.data))
