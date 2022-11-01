@@ -38,3 +38,45 @@ class AlbumApi(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(artist = self.request.user.artist)
+
+
+class AlbumApiManuaFiltering(viewsets.ModelViewSet):
+    queryset = Album.objects.filter(is_approved_by_admin = True)
+    serializer_class = AlbumSerializer
+    pagination_class = pagination.LimitOffsetPagination
+
+    def list(self, request, *args, **kwargs):
+        params = request.query_params
+        gte = 0
+        lte = 999999999999
+        icontains = ""
+        if 'cost__gte' in params:
+            if params['cost__gte']:
+                try:
+                    data = int(params['cost__gte'])
+                    gte = data
+                except:
+                    return Response(data = {
+                        "cost__gte": [ "Enter a number."],
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+        if 'cost__lte' in params:
+            if params['cost__lte']:
+                try:
+                    data = int(params['cost__lte'])
+                    lte = data
+                except:
+                    return Response(data = {
+                        "cost__lte": [ "Enter a number."],
+                    }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'name__icontains' in params:
+            if params['name__icontains']:
+                icontains = params['name__icontains']
+
+        data = Album.objects.filter(cost__gte = gte, cost__lte = lte, name__icontains = icontains, is_approved_by_admin = True)
+        seri = AlbumSerializer(data, many = True)
+
+        if 'limit' not in params:
+            return Response(seri.data)
+        return self.get_paginated_response(self.paginate_queryset(seri.data))
