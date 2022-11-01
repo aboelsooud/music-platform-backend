@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'knox',
     'users.apps.UsersConfig',
     'django_filters',
+    'django_celery_results',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -140,3 +141,11 @@ REST_FRAMEWORK = {
 
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
+
+# CELERY SETTINGS
+
+CELERY_CONF_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_CONF_ACCEPT_CONTENT = ['application/json']
+CELERY_CONF_RESULT_SERIALIZER = 'json'
+CELERY_CONF_TASK_SERIALIZER = 'json'
+CELERY_CONF_RESULT_BACKEND = 'django-db'
