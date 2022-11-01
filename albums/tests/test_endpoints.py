@@ -1,12 +1,13 @@
+from datetime import datetime
 from decimal import Decimal
+
 import pytest
-from artists.models import Artist
+import pytz
 from albums.models import Album
+from artists.models import Artist
 from rest_framework import status
 from rest_framework.test import APIClient
 from users.models import User
-from datetime import datetime
-import pytz
 
 
 @pytest.mark.django_db
@@ -37,7 +38,7 @@ def test_create_an_album(auth_client):
 @pytest.mark.django_db
 def test_create_album_with_missing_fileds(auth_client):
     user = User.objects.create_user(username = 'user')
-    artist = Artist.objects.create(user = user, stage_name = 'artist')
+    Artist.objects.create(user = user, stage_name = 'artist')
 
     client = auth_client(user)
 
@@ -53,7 +54,7 @@ def test_create_album_with_missing_fileds(auth_client):
 @pytest.mark.django_db
 def test_create_album_with_string_in_cost(auth_client):
     user = User.objects.create_user(username = 'user')
-    artist = Artist.objects.create(user = user, stage_name = 'artist')
+    Artist.objects.create(user = user, stage_name = 'artist')
 
     client = auth_client(user)
 
@@ -113,7 +114,6 @@ def test_retrieve_albums_data():
     albums = [album1, album3]
 
     client = APIClient()
-
     response = client.get('/albums/')
     data = response.data
 

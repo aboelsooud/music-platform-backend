@@ -1,12 +1,10 @@
-from albums.models import Album
-from .serializers import AlbumSerializer
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import pagination
 from django_filters import rest_framework as filters
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import pagination, permissions, status, viewsets
+from rest_framework.response import Response
 
+from albums.models import Album
+
+from .serializers import AlbumSerializer
 
 # Create your views here.
 
@@ -18,7 +16,6 @@ class AlbumFilters(filters.FilterSet):
             'cost' : ['gte', 'lte'],
             'name' : ['icontains']
         }
-
 
 class AlbumApi(viewsets.ModelViewSet):
     queryset = Album.objects.filter(is_approved_by_admin = True)

@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import Decimal
+
 import pytest
 from albums.models import Album
 from albums.serializers import AlbumSerializer
@@ -12,7 +13,6 @@ from users.models import User
 def test_serializer_returns_expected_fields_and_data():
     user = User.objects.create_user(username='user')
     artist = Artist.objects.create(user = user, stage_name = 'artist')
-
     album = Album.objects.create(artist = artist, name = 'album', release_date = datetime(2022, 10,10), cost = 100.10)
 
     seri = AlbumSerializer(album)
@@ -24,7 +24,6 @@ def test_serializer_returns_expected_fields_and_data():
     assert seri.data['name'] == album.name
     assert parse(seri.data['release_date'][:-1]) == album.release_date
     assert float(Decimal(seri.data['cost'])) == float(Decimal(album.cost))
-    
 
 @pytest.mark.django_db
 def test_serializer_with_valid_data():
@@ -73,4 +72,3 @@ def test_serializer_with_worng_data2():
     seri.is_valid(raise_exception=False)
     assert seri.errors
     assert seri.errors.keys() == set(['release_date'])
-     
