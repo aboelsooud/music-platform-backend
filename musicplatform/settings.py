@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'django_filters',
     'django_celery_results',
+    'django_celery_beat',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -155,6 +156,10 @@ CELERY_CONF_ACCEPT_CONTENT = ['application/json']
 CELERY_CONF_RESULT_SERIALIZER = 'json'
 CELERY_CONF_TASK_SERIALIZER = 'json'
 CELERY_CONF_RESULT_BACKEND = 'django-db'
+
+#CELERY BEAT SETTINGS
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseSchedular'
 
 
 # SMTP SETTINGS

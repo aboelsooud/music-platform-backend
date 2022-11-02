@@ -14,6 +14,13 @@ app.config_from_object(settings, namespace='CELERY_CONF')
 app.autodiscover_tasks()
 
 
+# Celery Beat Settings
+
+app.conf.beat_schedule = {
+
+}
+
+
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
