@@ -4,9 +4,10 @@ from model_utils.models import TimeStampedModel
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.core.validators import FileExtensionValidator
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+from albums.tasks import send_mail_task
 
 # Create your models here.
 
@@ -34,3 +35,8 @@ class Song(models.Model):
 def song_pre_save(sender, instance, *args, **kwargs):
     if len(instance.name.strip()) == 0:
         instance.name = slugify(instance.album.name)
+
+@receiver(post_save, sender=Album)
+def album_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        send_mail_task.delay(instance.name, instance.artist.id)

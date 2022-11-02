@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,10 +144,25 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
+
+ENV = environ.Env()
+ENV.read_env(os.path.join(BASE_DIR, '', '.env'))
+
 # CELERY SETTINGS
 
-CELERY_CONF_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_CONF_BROKER_URL = ENV('server')
 CELERY_CONF_ACCEPT_CONTENT = ['application/json']
 CELERY_CONF_RESULT_SERIALIZER = 'json'
 CELERY_CONF_TASK_SERIALIZER = 'json'
 CELERY_CONF_RESULT_BACKEND = 'django-db'
+
+
+# SMTP SETTINGS
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = ENV('email')
+EMAIL_HOST_PASSWORD = ENV('password')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = ENV('email')
