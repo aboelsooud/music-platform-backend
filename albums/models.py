@@ -1,12 +1,13 @@
-from django.db import models
 from artists.models import Artist
-from model_utils.models import TimeStampedModel
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
 from django.core.validators import FileExtensionValidator
-from django.db.models.signals import pre_save, post_save
+from django.db import models
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+from model_utils.models import TimeStampedModel
+
 from albums.tasks import send_mail_task
 
 # Create your models here.

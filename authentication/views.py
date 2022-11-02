@@ -1,9 +1,11 @@
-from rest_framework.generics import ListCreateAPIView, CreateAPIView
-from rest_framework.response import Response
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import AuthToken
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
 from users.models import User
-from .serializers import UserRegiserSerializer, UserModelSerializer
+
+from .serializers import UserModelSerializer, UserRegiserSerializer
+
 
 class LoginApiView(CreateAPIView):
     queryset = User.objects.all()

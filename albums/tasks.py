@@ -1,8 +1,10 @@
+from datetime import datetime, timezone
+
+from artists.models import Artist
 from celery import shared_task
 from django.core.mail import send_mail
 from musicplatform import settings
-from artists.models import Artist
-from datetime import datetime, timezone
+
 
 @shared_task(bind=True)
 def send_mail_task(self, album_name, artist_id):

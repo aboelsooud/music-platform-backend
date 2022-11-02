@@ -145,6 +145,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
+# ENVIROMENT VARIABLES
 
 ENV = environ.Env()
 ENV.read_env(os.path.join(BASE_DIR, '', '.env'))
