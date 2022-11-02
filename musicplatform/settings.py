@@ -156,11 +156,11 @@ CELERY_CONF_ACCEPT_CONTENT = ['application/json']
 CELERY_CONF_RESULT_SERIALIZER = 'json'
 CELERY_CONF_TASK_SERIALIZER = 'json'
 CELERY_CONF_RESULT_BACKEND = 'django-db'
+CELERY_CONF_TIMEZONE = 'Africa/Cairo'
 
 #CELERY BEAT SETTINGS
 
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseSchedular'
-
+CELERY_CONF_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # SMTP SETTINGS
 
