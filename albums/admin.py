@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import Album
+from .models import Album, Song
 from django import forms
 
 # Register your models here.
+
+class SongsInline(admin.StackedInline):
+    model = Song
+    extra = 0
 
 class AlbumForm(forms.ModelForm):
     class Meta:
@@ -19,5 +23,7 @@ class AlbumAdmin(admin.ModelAdmin):
         (None,  {'fields': ['is_approved_by_admin']}),
         (None,  {'fields': ['cost']}),
     ]
+
+    inlines = [SongsInline]
 
 admin.site.register(Album, AlbumAdmin)
