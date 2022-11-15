@@ -14,7 +14,6 @@ class ArtistManager(models.Manager):
     def annotated(self):
         return self.get_queryset().annotated()
 
-
 class Artist(models.Model):
     stage_name = models.CharField(max_length=200, unique=True)
     social_link = models.URLField(max_length=200, blank=True, null=False)

@@ -41,7 +41,12 @@ INSTALLED_APPS = [
     'albums.apps.AlbumsConfig',
     'imagekit',
     'rest_framework',
+    'django_extensions',
+    'knox',
+    'users.apps.UsersConfig',
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -126,7 +131,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = "/"
-
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : ('knox.auth.TokenAuthentication',)
+}
