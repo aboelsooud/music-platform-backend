@@ -1,8 +1,10 @@
-from artists.models import Artist
-from .serializers import ArtistSerializer
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+
+from artists.models import Artist
+
+from .serializers import ArtistSerializer
 
 
 class ArtistApiView(GenericAPIView):

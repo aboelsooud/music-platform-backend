@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +47,8 @@ INSTALLED_APPS = [
     'knox',
     'users.apps.UsersConfig',
     'django_filters',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -140,3 +144,31 @@ REST_FRAMEWORK = {
 
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
+
+# ENVIROMENT VARIABLES
+
+ENV = environ.Env()
+ENV.read_env(os.path.join(BASE_DIR, '', '.env'))
+
+# CELERY SETTINGS
+
+CELERY_CONF_BROKER_URL = ENV('server')
+CELERY_CONF_ACCEPT_CONTENT = ['application/json']
+CELERY_CONF_RESULT_SERIALIZER = 'json'
+CELERY_CONF_TASK_SERIALIZER = 'json'
+CELERY_CONF_RESULT_BACKEND = 'django-db'
+CELERY_CONF_TIMEZONE = 'Africa/Cairo'
+
+#CELERY BEAT SETTINGS
+
+CELERY_CONF_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# SMTP SETTINGS
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = ENV('email')
+EMAIL_HOST_PASSWORD = ENV('password')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = ENV('email')
