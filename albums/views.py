@@ -1,35 +1,79 @@
-from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from .forms import AlbumForm
-from dateutil.parser import parse
-from django.views import View
+from django_filters import rest_framework as filters
+from rest_framework import pagination, permissions, status, viewsets
+from rest_framework.response import Response
+
+from albums.models import Album
+
+from .serializers import AlbumSerializer
 
 # Create your views here.
 
-class IndexView(View):
+class AlbumFilters(filters.FilterSet):
 
-    def get(self, request):
-        return HttpResponse('album')
+    class Meta:
+        model = Album
+        fields = {
+            'cost' : ['gte', 'lte'],
+            'name' : ['icontains']
+        }
 
-class CreateAlbumView(View):
-    form_class = AlbumForm
-    initial = {'key': 'value'}
-    template_name = 'albums/album_form.html'
-    
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
+class AlbumApi(viewsets.ModelViewSet):
+    queryset = Album.objects.filter(is_approved_by_admin = True)
+    serializer_class = AlbumSerializer
+    filterset_class = AlbumFilters
+    pagination_class = pagination.LimitOffsetPagination
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        realease_date = request.POST.get('release_date')
-        if form.is_valid:
-            try:
-                parse(realease_date)
-                form.save()
-                return redirect('albums')
-            except:
-                pass
-        context = {'form' : form}
+    def create(self, request, *args, **kwargs):
+        if not hasattr(request.user, 'artist'):
+            return Response(status=status.HTTP_403_FORBIDDEN, data = {'status': status.HTTP_403_FORBIDDEN,'message':'this user is not an artist'})
 
-        return render(request, 'albums/album_form.html', context)
+        seri = AlbumSerializer(data = request.data)
+        seri.is_valid(raise_exception=True)
+        self.perform_create(seri)
+        return Response(seri.data, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save(artist = self.request.user.artist)
+
+
+class AlbumApiManuaFiltering(viewsets.ModelViewSet):
+    queryset = Album.objects.filter(is_approved_by_admin = True)
+    serializer_class = AlbumSerializer
+    pagination_class = pagination.LimitOffsetPagination
+
+    def list(self, request, *args, **kwargs):
+        params = request.query_params
+        gte = 0
+        lte = 999999999999
+        icontains = ""
+        if 'cost__gte' in params:
+            if params['cost__gte']:
+                try:
+                    data = int(params['cost__gte'])
+                    gte = data
+                except:
+                    return Response(data = {
+                        "cost__gte": [ "Enter a number."],
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+        if 'cost__lte' in params:
+            if params['cost__lte']:
+                try:
+                    data = int(params['cost__lte'])
+                    lte = data
+                except:
+                    return Response(data = {
+                        "cost__lte": [ "Enter a number."],
+                    }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if 'name__icontains' in params:
+            if params['name__icontains']:
+                icontains = params['name__icontains']
+
+        data = Album.objects.filter(cost__gte = gte, cost__lte = lte, name__icontains = icontains, is_approved_by_admin = True)
+        seri = AlbumSerializer(data, many = True)
+
+        if 'limit' not in params:
+            return Response(seri.data)
+        return self.get_paginated_response(self.paginate_queryset(seri.data))

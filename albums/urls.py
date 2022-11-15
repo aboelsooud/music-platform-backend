@@ -2,7 +2,16 @@ from django.urls import path
 
 from . import views
 
+albums = views.AlbumApi.as_view({
+    'get' : 'list',
+    'post' : 'create'
+})
+
+manualfiltering = views.AlbumApiManuaFiltering.as_view({
+    'get' : 'list',
+})
+
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='albums'),
-    path('create/', views.CreateAlbumView.as_view(), name='create album'),
+    path('', albums, name='albums'),
+    path('manual/', manualfiltering, name='albums filtering'),
 ]
